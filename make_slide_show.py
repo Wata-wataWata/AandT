@@ -63,7 +63,7 @@ def main():
 
     # 終了処理
     subprocess.call('rm ./tmp/*', shell=True)
-    # subprocess.call('rm list.txt', shell=True)
+    subprocess.call('rm list.txt', shell=True)
 
 
 if __name__ == "__main__":

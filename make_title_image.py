@@ -46,7 +46,7 @@ def make_title_image(number: str, title: str, member: str,
     font = ImageFont.truetype(font_file_name, number_fsize)
     draw.text(number_pos, number, fill='#FFF', font=font)
     # title を描く
-
+    # title サイズ調整
     while title_width < out_title_size[0] or title_height < out_title_size[1]:
         title_fsize -= 1
         font = ImageFont.truetype(font_file_name, title_fsize)

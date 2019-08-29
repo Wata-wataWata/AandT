@@ -10,9 +10,9 @@ CONVERT_IMAGE_TO = "png"
 
 # 高さを合わせるコマンド
 # OSXにしかないかも？
-CMD_RESAMPLE_HEIGHT = ["sips", "--resampleHeight", "1080", "tmp/*"]
+CMD_RESAMPLE_HEIGHT = "sips --resampleHeight 1080 "
 # 2Kに合わせて切り抜くコマンド
-CMD_CROP_FULLHD = ["sips", "-c", "1080", "1920", "tmp/*"]
+CMD_CROP_FULLHD = "sips -c 1080 1920 "
 # スライドショーを作るコマンド
 CMD_MAKE_SLIDE_SHOW = ["ffmpeg", "-y", "-r", "0.2", "-i", "tmp/%03d.png",
                        "-b:v", "3000k", "-c:v", "h264", "-pix_fmt", "yuv420p", "-r", "30", "out.mp4"]
@@ -53,8 +53,9 @@ def main():
         subprocess.call(cmd)
 
     # tmp のファイルたちのサイズを統一する　1920×1080
-    subprocess.call(CMD_RESAMPLE_HEIGHT, shell=True)
-    subprocess.call(CMD_CROP_FULLHD, shell=True)
+    for file in range(len(slide_list)):
+        subprocess.call(CMD_RESAMPLE_HEIGHT + "tmp/%03d.%s" % (i, CONVERT_IMAGE_TO), shell=True)
+        subprocess.call(CMD_CROP_FULLHD + "tmp/%03d.%s" % (i, CONVERT_IMAGE_TO), shell=True)
 
     try:
         subprocess.call(CMD_MAKE_SLIDE_SHOW)

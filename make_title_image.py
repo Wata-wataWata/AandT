@@ -2,7 +2,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 def main():
-    make_title_image("AT2019_A001", "hogehogeほげ", "sato\nsuzuki\ntakahashi",
+    make_title_image("AT2019_A001", "hogehoge", "sato\nsuzuki\ntakahashi",
                      "/Users/watanabedaiki/PycharmProjects/AandT/test.png")
 
 
@@ -19,16 +19,48 @@ def make_title_image(number: str, title: str, member: str,
     :param font_file_name:   フォントを指定する変数。デフォルトはヒラギノ角ゴ。
     """
 
-    # margin = 20
+    # 余白の量
+    margin_w = int(width / 10)
+    margin_h = int(height / 10)
 
+    # フォントサイズ
+    number_fsize = 24
+    title_fsize = 200
+    member_fsize = 24
+
+    # 各文字の位置
+    number_pos = (margin_w, height / 4)
+    title_pos = (margin_w, height / 2 - title_fsize / 2)
+    member_pos = (margin_w, height / 3 * 2)
+
+    # titleの最大サイズ
+    title_width = width - margin_w * 2
+    title_height = height / 8
+    out_title_size = (title_width + 1, title_height + 1)
+
+    # 新規画像生成
     img = Image.new('RGB', (width, height), 'black')
-    # draw = ImageDraw.Draw(img)
+    draw = ImageDraw.Draw(img)
 
-    # font = ImageFont.truetype(font_file_name, 24)
-    # draw.text((int(height / 3), margin), number, fill='#FFF', font=font)
-    # img.show()
+    # number を描く
+    font = ImageFont.truetype(font_file_name, number_fsize)
+    draw.text(number_pos, number, fill='#FFF', font=font)
+    # title を描く
+
+    while title_width < out_title_size[0] or title_height < out_title_size[1]:
+        title_fsize -= 1
+        font = ImageFont.truetype(font_file_name, title_fsize)
+        # font のサイズをtextsize()で取得
+        out_title_size = draw.textsize(title, font=font)
+    draw.text(title_pos, title, fill='#FFF', font=font)
+    # member を描く
+    font = ImageFont.truetype(font_file_name, member_fsize)
+    draw.text(member_pos, member, fill='#FFF', font=font)
+
+    img.show()
+    print(dst_path)
     img.save(dst_path)
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     main()
